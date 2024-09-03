@@ -38,7 +38,6 @@ public class User extends BaseEntity implements UserDetails {
     @Column(length = 100, nullable = false)
     private String password;
 
-
     @Column(name = "is_active")
     private Boolean isActive;
 
@@ -59,7 +58,7 @@ public class User extends BaseEntity implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_"+getRole().getName()));
-        return List.of();
+        return authorities;
     }
 
     @Override

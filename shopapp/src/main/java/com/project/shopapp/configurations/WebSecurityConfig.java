@@ -12,13 +12,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
+    // Nhiệm vụ kiểm tra request gởi đến co những quyền gì, tu đó quyết dinh cap quyen
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((request) -> {
                     request.requestMatchers("**").permitAll();
-                })
-        ;
+                });
         return http.build();
     }
 }

@@ -10,6 +10,6 @@ import java.util.List;
 @Service
 public interface IUserService {
     User createUser(UserDTO user) throws DataNotFoundException;
-    User login(String phoneNumber, String password) throws Exception;
+    String login(String phoneNumber, String password) throws Exception;
     List<User> getAllUsers();
 }

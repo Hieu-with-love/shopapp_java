@@ -36,20 +36,28 @@ public class UserController {
                         .toList();
                 return ResponseEntity.badRequest().body(lstError);
             }
+            if (!userDTO.getPassword().equals(userDTO.getRetypePassword())){
+                return ResponseEntity.badRequest().body("Passwords do not match");
+            }
 
-            userService.createUser(userDTO);
+            User user = userService.createUser(userDTO);
 
-            return ResponseEntity.status(HttpStatus.OK).body("Register a account successfully");
+            return ResponseEntity.status(HttpStatus.OK).body(user);
         }catch (Exception e){
             return ResponseEntity.badRequest().body("Fail");
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody UserDTO userDTO, BindingResult result) throws Exception {
+    public ResponseEntity<?> login(@Valid @RequestBody UserDTO userDTO, BindingResult result) {
         // Kiểm tra thông tin đăng nhập và generate token
         // Thực hiện trả về token trong response
-        User token = userService.login(userDTO.getPhoneNumber() ,userDTO.getPassword());
-        return ResponseEntity.ok(token);
+        try{
+            String token = userService.login(userDTO.getPhoneNumber() ,userDTO.getPassword());
+            return ResponseEntity.ok(token);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
