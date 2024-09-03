@@ -2,6 +2,8 @@ package com.project.shopapp.controllers;
 
 import com.project.shopapp.dtos.UserDTO;
 import com.project.shopapp.models.User;
+import com.project.shopapp.responses.AuthenticationResponse;
+import com.project.shopapp.services.AuthenticationService;
 import com.project.shopapp.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final AuthenticationService authenticationService;
 
     @GetMapping("")
     public ResponseEntity<List<User>> getAllUsers() {
@@ -44,7 +47,7 @@ public class UserController {
 
             return ResponseEntity.status(HttpStatus.OK).body(user);
         }catch (Exception e){
-            return ResponseEntity.badRequest().body("Fail");
+            return ResponseEntity.badRequest().body("Fail " + e.getMessage());
         }
     }
 
@@ -58,6 +61,15 @@ public class UserController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
 
+    @PostMapping("/authenticate/login")
+    public ResponseEntity<?> authenticate(@Valid @RequestBody UserDTO userDTO, BindingResult result){
+        try{
+            AuthenticationResponse authenticationResponse = authenticationService.authenticate(userDTO);
+            return ResponseEntity.ok(authenticationResponse);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
