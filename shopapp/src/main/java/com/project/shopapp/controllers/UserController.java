@@ -1,12 +1,15 @@
 package com.project.shopapp.controllers;
 
 import com.project.shopapp.dtos.UserDTO;
+import com.project.shopapp.dtos.request.AuthenticationRequest;
 import com.project.shopapp.models.User;
+import com.project.shopapp.services.AuthenticationService;
 import com.project.shopapp.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +22,8 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final AuthenticationService authenticationService;
 
     @GetMapping("")
     public ResponseEntity<?> allUsers() {
@@ -51,5 +56,17 @@ public class UserController {
         // Thực hiện trả về token trong response
         User token = userService.login(userDTO.getPhoneNumber() ,userDTO.getPassword());
         return ResponseEntity.ok(token);
+    }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<?> authenticate(@Valid @RequestBody AuthenticationRequest request, BindingResult result) throws Exception {
+        // Kiểm tra thông tin đăng nhập và generate token
+        // Thực hiện trả về token trong response
+        try {
+            var token = authenticationService.authenticate(request);
+            return ResponseEntity.ok(token);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

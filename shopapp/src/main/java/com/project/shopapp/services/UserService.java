@@ -58,11 +58,12 @@ public class UserService implements IUserService {
     @Override
     public User login(String phoneNumber, String password) throws Exception {
         // doan nay lien quan nhieu den Spring Security
-        Optional<User> optionalUser = userRepository.findByPhoneNumber(phoneNumber);
-        if (optionalUser.isEmpty()){
-            throw new DataNotFoundException("User not found");
-        }
-        return optionalUser.get(); // muốn trả ve JWT Token?
+//        Optional<User> optionalUser = userRepository.findByPhoneNumber(phoneNumber);
+//        if (optionalUser.isEmpty()){
+//            throw new DataNotFoundException("User not found");
+//        }
+//        return optionalUser.get(); // muốn trả ve JWT Token?
+        return null;
     }
 
     @Override

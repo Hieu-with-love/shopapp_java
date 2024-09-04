@@ -22,8 +22,10 @@ public class SecurityConfig {
     // user's detail object
     @Bean
     public UserDetailsService userDetailsService() {
-        return phoneNumber -> userRepository.findByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return phoneNumber -> {
+            return userRepository.findByPhoneNumber(phoneNumber)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        };
     }
 
     @Bean
