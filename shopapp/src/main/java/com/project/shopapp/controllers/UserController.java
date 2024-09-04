@@ -21,9 +21,9 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("")
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<?> allUsers() {
         List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok("Lay thanh cong " + users);
     }
 
     @PostMapping("/register")
