@@ -2,6 +2,7 @@ package com.project.shopapp.controllers;
 
 import com.project.shopapp.dtos.UserDTO;
 import com.project.shopapp.dtos.request.AuthenticationRequest;
+import com.project.shopapp.dtos.request.IntrospectRequest;
 import com.project.shopapp.models.User;
 import com.project.shopapp.services.AuthenticationService;
 import com.project.shopapp.services.UserService;
@@ -65,6 +66,18 @@ public class UserController {
         try {
             var token = authenticationService.authenticate(request);
             return ResponseEntity.ok(token);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PostMapping("/introspect")
+    public ResponseEntity<?> introspect(@Valid @RequestBody IntrospectRequest request, BindingResult bindingResult) throws Exception {
+        // Kiểm tra thông tin đăng nhập và generate token
+        // Thực hiện trả về token trong response
+        try {
+            var result = authenticationService.introspectVerify(request);
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
